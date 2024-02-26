@@ -10,21 +10,19 @@ interface PhotoPageProps {
 }
 
 const PhotoPage = async ({ params }: PhotoPageProps) => {
-  const response = await getPhoto(params.id);
+  const photo = await getPhoto(params.id);
 
-  if (response.status === 404) {
+  if (!photo) {
     notFound();
   }
 
-  const photo = (await response.json()) as Photo;
-
   return (
     <PhotoDetails
-      src={photo.urls.regular}
-      alt={photo.alt_description}
+      src={photo}
+      alt=""
       photographer={{
-        name: photo.user.name,
-        instagram: photo.user.social.instagram_username,
+        name: "John Doe",
+        instagram: "@johndoe",
       }}
     />
   );

@@ -1,6 +1,5 @@
 import Modal from "@/components/Modal";
 import PhotoDetails from "@/components/PhotoDetails";
-import type { Photo } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { getPhoto } from "@/lib/unsplash";
 
@@ -11,22 +10,20 @@ interface PhotoModalPageProps {
 }
 
 const PhotoModalPage = async ({ params }: PhotoModalPageProps) => {
-  const response = await getPhoto(params.id);
+  const photo = await getPhoto(params.id);
 
-  if (response.status === 404) {
+  if (!photo) {
     notFound();
   }
-
-  const photo = (await response.json()) as Photo;
 
   return (
     <Modal>
       <PhotoDetails
-        src={photo.urls.regular}
-        alt={photo.alt_description}
+        src={photo}
+        alt=""
         photographer={{
-          name: photo.user.name,
-          instagram: photo.user.social.instagram_username,
+          name: "John Doe",
+          instagram: "@johndoe",
         }}
       />
     </Modal>
